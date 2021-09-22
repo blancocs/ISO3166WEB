@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import { AppProvider } from './context/AppContext';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { CountryListContainer } from './components/CountryListContainer/CountryListContainer';
+
+import { CountryContainer } from './components/CountryContainer/CountryContainer';
+import { StateListContainer } from './components/StateListContainer/StateListContainer';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AppProvider>
+        <BrowserRouter>
+        <Switch>
+            <Route exact path ="/">
+              <div >
+                <CountryListContainer/>
+
+              </div>
+              </Route>
+
+              <Route exact path="/countries/:id">
+                <CountryContainer/>
+              </Route>
+
+              <Route exact path="/CountryStates/:id">
+                <StateListContainer/>
+            </Route>
+        </Switch>
+        </BrowserRouter>
+      </AppProvider>
     </div>
   );
 }
