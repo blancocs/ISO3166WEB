@@ -10,12 +10,44 @@ export const iso3166api = {
     addCountry,
     deleteState,
     UpdateState,
-    addCountryState
+    addCountryState,
+    Register
 };
+
+
+//ACCOUNT----------------
+function Register (user) {
+ 
+
+  const url = 'account/register'
+  
+  return  fetch(urlApi + url, {
+    // mode:'no-cors',    
+    method:'POST', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user)
+    })
+  .then(async res => {
+     let data = await res.json()
+     console.log(data)
+     
+     if (!res.ok) {
+        data = data.map(res=>res.description + "\n"); 
+       throw Error(data)
+     }
+
+     return data
+
+  })
+}
+
+
+//COUNTRIES---------
 
 function getAll(page, maxPerPage) {
     const url = 'countries?Page=' + page + '&RecordsPerPage=' + maxPerPage
-    
+    let totalItems =0;
+
   return  fetch(urlApi + url, {
         // mode:'no-cors',    
         method:'GET', 
@@ -24,10 +56,17 @@ function getAll(page, maxPerPage) {
      
       .then(
         (result) =>{ 
+          totalItems = parseFloat(result.headers.get('totalitems'))
           result = result.json()
-            return result
+          return result
         }
       )
+      .then (res => {
+         const  obj =  {totalItems:totalItems,
+                       res: res
+               } 
+             return obj
+      })
       .catch(err  => console.log(err));
     
 }
@@ -70,8 +109,7 @@ function getAll(page, maxPerPage) {
 
 function getCountryStates(id) {
   
-  console.log('el country id es:')
-  console.log(id)
+  
   const url = 'countries/' + id + '/states'
   return  fetch(urlApi + url, {
     // mode:'no-cors',    
@@ -81,7 +119,7 @@ function getCountryStates(id) {
   .then(res => res.json())
   .then(
     (result) =>{ 
-       console.log(result)
+       
         return result
     }
   )
@@ -162,7 +200,7 @@ function UpdateState(id,state) {
   .then(res => res.json())
   .then(
     (result) =>{ 
-      // console.log(result)
+  
         return result
     }
   )

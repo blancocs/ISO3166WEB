@@ -40,8 +40,7 @@ export const StateAdd = () => {
                 text: ` ${err.toString()}`,
                 confirmButtonText: 'close'
             })
-            console.log('entre al error del add')
-                console.log(err)
+            
         }) 
     }
 

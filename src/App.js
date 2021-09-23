@@ -8,12 +8,47 @@ import { StateListContainer } from './components/StateListContainer/StateListCon
 import { NavBar } from './components/NavBar/NavBar';
 import { CountryItem } from './components/CountryItem/CountryItem';
 import { StateAdd } from './components/StateAdd/StateAdd';
+import { useEffect, useState } from 'react';
+import { Login } from './Login/Login';
+
+
 
 function App() {
+
+  const  getToken = () => {
+    console.log(localStorage.getItem('Bearer'))
+    return localStorage.getItem('Bearer')
+  }
+  
+const[token, setTokenUpdated] = useState(getToken())
+  
+const  setToken = (userToken) => {
+  localStorage.setItem('Bearer', JSON.stringify(userToken));
+  setTokenUpdated(userToken)
+}
+
+
+
+useEffect( () => {
+    
+
+  console.log(token)
+},[token])
+
+  
+  
+
+
   return (
+
+  
+  
     <div>
       <AppProvider>
         <BrowserRouter>
+        {!token ? <Login setToken={setToken} />
+        :
+        <>
         <NavBar/> 
 
         <Switch>
@@ -41,6 +76,8 @@ function App() {
                 <StateAdd/>
               </Route>
         </Switch>
+        </>
+        }
         </BrowserRouter>
       </AppProvider>
     </div>

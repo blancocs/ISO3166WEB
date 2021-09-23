@@ -11,7 +11,8 @@ import { ModalCountryModify } from '../ModalCountryModify/ModalCountryModify';
 export const CountryListContainer = () => {
     const [countries, setCountries] = useState([]);
     const [page, setPage] = useState(1);
-    const [maxPerPage, setMaxPerPage] = useState(5);
+    const [maxPerPage, setMaxPerPage] = useState(10);
+    const [totalRows, setTotalRows] = useState(0);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -20,7 +21,7 @@ export const CountryListContainer = () => {
     const handleDeleteClick = (e,id) => {
 		
         e.preventDefault();
-         iso3166api.deleteCountry(id).then( (res) => {getAllCountries()}
+         iso3166api.deleteCountry(id).then( (res) => {getAllCountries(page, maxPerPage)}
         )
         .catch(err=>console.log(err))
         //muestro el resultado
@@ -28,7 +29,7 @@ export const CountryListContainer = () => {
 	};
     const handleUpdate = () => {
         iso3166api.UpdateCountry(modalInfo.id, modalInfo).then( (res) => {
-            getAllCountries()
+            getAllCountries(page, maxPerPage)
             toggleTrueFalse()
         })
         .catch(err=>console.log(err))
@@ -115,12 +116,35 @@ export const CountryListContainer = () => {
 		],
 		[],
 	);
+    
+    const handlePageChange = page => {
+		getAllCountries(page, maxPerPage);
+	};
 
-
+    const handlePerRowsChange = async (newPerPage, page) => {
+		setLoading(true);
+        console.log(newPerPage)
+        console.log(page)
+        setMaxPerPage(newPerPage);
+		
+        getAllCountries(page,newPerPage);
+        
+        console.log("handlePerRows")
+        
+      
+		// setCountries(response.res);
+		
+		setLoading(false);
+	};
 
 const getAllCountries = (page, maxPerPage) => {
-    iso3166api.getAll(1,5).then(res=> { 
-        setCountries(res)})
+    iso3166api.getAll(page,maxPerPage, setPage).then(res=> { 
+        
+        console.log(res)
+        setTotalRows(res.totalItems)
+        setCountries(res.res)
+    
+    })
         .catch(err=> console.log(err))
         
         setLoading(false)
@@ -131,7 +155,7 @@ useEffect( () => {
 
     setLoading(true)
 
-    getAllCountries(1,5)
+    getAllCountries(page,maxPerPage)
 
     },[])
 
@@ -149,7 +173,10 @@ useEffect( () => {
             data= {countries}
             columns={columns}
             pagination
-            
+            paginationServer
+			paginationTotalRows={totalRows}
+			onChangeRowsPerPage={handlePerRowsChange}
+			onChangePage={handlePageChange}
           
             />
             <ModalCountryModify isOpen={isOpen} handleClose={toggleTrueFalse} setModalInfo={setModalInfo} modalInfo={modalInfo} handleUpdate={handleUpdate}/>
