@@ -20,7 +20,7 @@ export const CountryListContainer = () => {
     const handleDeleteClick = (e,id) => {
 		
         e.preventDefault();
-        iso3166api.deleteCountry(id).then( (res) => {getAllCountries()}
+         iso3166api.deleteCountry(id).then( (res) => {getAllCountries()}
         )
         .catch(err=>console.log(err))
         //muestro el resultado
@@ -140,10 +140,15 @@ useEffect( () => {
         <>
         { loading ? <h2>"loading Countries"</h2>
         :
-        <div className="justy-content-center">
-            <DataTable title="Countries" 
+        <div className="container justy-content-center py-5">
+            <div className="d-flex justify-content-end">
+                <Link to="/countries" className="btn btn-primary text-right">Add Country</Link>
+            </div>
+
+           <DataTable title="Countries" 
             data= {countries}
             columns={columns}
+            pagination
             
           
             />
