@@ -1,8 +1,10 @@
-
 import React, {useEffect, useMemo, useState} from 'react'
 import { iso3166api } from '../../services/iso3166api';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
+import {RiEditLine} from 'react-icons/ri'
+import {MdDelete} from 'react-icons/md'
+import { ModalCountryModify } from '../ModalCountryModify/ModalCountryModify';
 
 // import { createProxyMiddleware } from 'http-proxy-middleware';
 
@@ -11,27 +13,41 @@ export const CountryListContainer = () => {
     const [page, setPage] = useState(1);
     const [maxPerPage, setMaxPerPage] = useState(5);
     const [loading, setLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleButtonClick = (e,id) => {
+    const [modalInfo, setModalInfo] = useState([]);
+    
+    const handleDeleteClick = (e,id) => {
 		
         e.preventDefault();
-        
         iso3166api.deleteCountry(id).then( (res) => {getAllCountries()}
-            
         )
         .catch(err=>console.log(err))
-
-
-
         //muestro el resultado
-
-        
-
-		console.log('clicked');
-        console.log(id);
         
 	};
+    const handleUpdate = () => {
+        iso3166api.UpdateCountry(modalInfo.id, modalInfo).then( (res) => {
+            getAllCountries()
+            toggleTrueFalse()
+        })
+        .catch(err=>console.log(err))
 
+    }
+    const handleEditClick = (e, row) => {
+        console.log(row)
+        setModalInfo(row)
+        toggleTrueFalse()
+        
+        //llamo al servicio
+    //setisopen.
+    }
+
+    const toggleTrueFalse = () => {
+        setIsOpen(!isOpen)
+        //llamo al servicio
+    //setisopen.
+    }
     const columns = useMemo(
 		() => [
             {
@@ -76,14 +92,20 @@ export const CountryListContainer = () => {
 				right: true,
 			},
             {
-                 cell: (row) => <button className="btn btn-danger"  onClick={(e) => handleButtonClick(e,row.id)}>Delete</button>, // onClick={handleButtonClick}
+                 cell: (row) => <button className="btn btn-warning"  onClick={(e) => handleEditClick(e,row)}><RiEditLine/></button>, // onClick={handleButtonClick}
 				ignoreRowClick: true,
 				allowOverflow: true,
 				button: true,
             },
-
             {
-                cell: (row) => <Link to={"/CountryStates/" + row.id} className="btn btn-primary">States</Link>, // onClick={handleButtonClick}
+                cell: (row) => <button className="btn btn-danger"  onClick={(e) => handleDeleteClick(e,row.id)}><MdDelete/></button>, // onClick={handleDeleteClick}
+               ignoreRowClick: true,
+               allowOverflow: true,
+               button: true,
+           },
+            
+            {
+                cell: (row) => <Link to={"/CountryStates/" + row.id} className="btn btn-primary">States</Link>, // onClick={handleDeleteClick}
                ignoreRowClick: true,
                allowOverflow: true,
                button: true,
@@ -93,6 +115,8 @@ export const CountryListContainer = () => {
 		],
 		[],
 	);
+
+
 
 const getAllCountries = (page, maxPerPage) => {
     iso3166api.getAll(1,5).then(res=> { 
@@ -121,23 +145,17 @@ useEffect( () => {
             data= {countries}
             columns={columns}
             
-            
+          
             />
+            <ModalCountryModify isOpen={isOpen} handleClose={toggleTrueFalse} setModalInfo={setModalInfo} modalInfo={modalInfo} handleUpdate={handleUpdate}/>
+          
         </div>
-            // <CountryList countriesList={countries}/>
+            
         }
         </>
     )
 
-    // fetch('https://localhost:44365/api/countries',{
-    //   method: 'POST',
-    //   headers:{'Content-type':'application/json'},
-    //     body: empInfo
-    // }).then(r=>r.json()).then(res=>{
-    //   if(res){
-    //     this.setState({message:'New Employee is Created Successfully'});
-    //   }
-    // });
+
 
 
 }

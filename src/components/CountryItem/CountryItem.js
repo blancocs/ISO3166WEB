@@ -1,5 +1,4 @@
 import React from 'react'
-import { FormLabel } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 export const CountryItem = ({Id, countryName,  shortName}) => {

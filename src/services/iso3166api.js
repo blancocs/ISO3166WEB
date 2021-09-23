@@ -5,7 +5,8 @@ export const iso3166api = {
     getAll,
     deleteCountry,
     getCountry,
-    getCountryStates
+    getCountryStates, 
+    UpdateCountry
 };
 
 function getAll(page, maxPerPage) {
@@ -60,8 +61,6 @@ function getAll(page, maxPerPage) {
   )
   .catch((err)  => {return err});
 
-
-
 }
 
 
@@ -81,6 +80,24 @@ function getCountryStates(id) {
   )
   .catch((err)  => {return err});
 
+}
 
+
+function UpdateCountry(id,row) {
+  const url = 'countries/' + id 
+  return  fetch(urlApi + url, {
+    // mode:'no-cors',    
+    method:'PUT', 
+    headers:new Headers( authHeader()),
+    body: JSON.stringify(row)
+    })
+  .then(res => res.json())
+  .then(
+    (result) =>{ 
+      // console.log(result)
+        return result
+    }
+  )
+  .catch((err)  => {return err});
 
 }

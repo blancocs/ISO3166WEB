@@ -5,12 +5,15 @@ import { CountryListContainer } from './components/CountryListContainer/CountryL
 
 import { CountryContainer } from './components/CountryContainer/CountryContainer';
 import { StateListContainer } from './components/StateListContainer/StateListContainer';
+import { NavBar } from './components/NavBar/NavBar';
 
 function App() {
   return (
     <div>
       <AppProvider>
         <BrowserRouter>
+        <NavBar/> 
+
         <Switch>
             <Route exact path ="/">
               <div >
