@@ -78,10 +78,11 @@ export const StateListContainer = () => {
         getAllCountryStates(id)
     
 
-    },[])
+    },[id])
 
 
     return (
+        loading ? '' :
         <div className="container my-5"> 
             <div className="row justify-content-center p-3">
                 

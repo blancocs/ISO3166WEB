@@ -6,12 +6,9 @@ import Swal from 'sweetalert2'
 
 export const StateAdd = () => {
 
-    console.log("entre")
-
     const {id} = useParams()
 
-    console.log(id)
-    
+   
     const [values, setValues] = useState({
         code: '',
         subdivisionName: '',
@@ -67,7 +64,7 @@ export const StateAdd = () => {
 
             <div className="py-1 pb-3">
                 <Form.Label>Subdivision Category</Form.Label>
-                <Form.Control type="text"  placeholder="Enter Alpha2Code" name="subdivisionCategory"  value={values.subdivisionCategory} onChange={handleInputChange} /> 
+                <Form.Control type="text"  placeholder="Enter Subdivision Category" name="subdivisionCategory"  value={values.subdivisionCategory} onChange={handleInputChange} /> 
             </div>
 
             <button className="btn btn-primary" onClick={handleAddClick}>add</button>

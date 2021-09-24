@@ -1,13 +1,8 @@
 import Button from "@restart/ui/esm/Button";
-import { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 
 export const ModalStateModify = ({isOpen, handleClose, setModalInfo, modalInfo, handleUpdate}) => {
-    const [show, setShow] = useState(false);
-
     
-
-
     const handleInputChange = (e) => {
       
         setModalInfo({

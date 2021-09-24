@@ -1,13 +1,13 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 
 export const AppContext = createContext()
 
 export const AppProvider =({children}) => {
 
-    const [bearer, setBearer] = useState()
+    
 
     return (
-        <AppContext.Provider value = {{bearer}}>
+        <AppContext.Provider>
             {children}
         </AppContext.Provider>
     )

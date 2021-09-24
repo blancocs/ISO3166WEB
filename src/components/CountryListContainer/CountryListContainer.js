@@ -13,7 +13,7 @@ export const CountryListContainer = () => {
     const [page, setPage] = useState(1);
     const [maxPerPage, setMaxPerPage] = useState(10);
     const [totalRows, setTotalRows] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
 
     const [modalInfo, setModalInfo] = useState([]);
@@ -24,8 +24,7 @@ export const CountryListContainer = () => {
          iso3166api.deleteCountry(id).then( (res) => {getAllCountries(page, maxPerPage)}
         )
         .catch(err=>console.log(err))
-        //muestro el resultado
-        
+         
 	};
     const handleUpdate = () => {
         iso3166api.UpdateCountry(modalInfo.id, modalInfo).then( (res) => {
@@ -36,12 +35,10 @@ export const CountryListContainer = () => {
 
     }
     const handleEditClick = (e, row) => {
-        console.log(row)
+      
         setModalInfo(row)
         toggleTrueFalse()
         
-        //llamo al servicio
-    //setisopen.
     }
 
     const toggleTrueFalse = () => {
@@ -123,24 +120,17 @@ export const CountryListContainer = () => {
 
     const handlePerRowsChange = async (newPerPage, page) => {
 		setLoading(true);
-        console.log(newPerPage)
-        console.log(page)
+        
         setMaxPerPage(newPerPage);
 		
         getAllCountries(page,newPerPage);
         
-        console.log("handlePerRows")
-        
-      
-		// setCountries(response.res);
-		
-		setLoading(false);
+        setLoading(false);
 	};
 
 const getAllCountries = (page, maxPerPage) => {
     iso3166api.getAll(page,maxPerPage, setPage).then(res=> { 
         
-        console.log(res)
         setTotalRows(res.totalItems)
         setCountries(res.res)
     
@@ -174,9 +164,11 @@ useEffect( () => {
             columns={columns}
             pagination
             paginationServer
+            progressPending={loading}
 			paginationTotalRows={totalRows}
 			onChangeRowsPerPage={handlePerRowsChange}
 			onChangePage={handlePageChange}
+            
           
             />
             <ModalCountryModify isOpen={isOpen} handleClose={toggleTrueFalse} setModalInfo={setModalInfo} modalInfo={modalInfo} handleUpdate={handleUpdate}/>

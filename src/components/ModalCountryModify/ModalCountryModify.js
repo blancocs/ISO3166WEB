@@ -1,12 +1,8 @@
 import Button from "@restart/ui/esm/Button";
-import { useState } from "react";
 import { Form, Modal } from "react-bootstrap"
 import './ModalCountryModify.css'
 
 export const ModalCountryModify = ({isOpen, handleClose, setModalInfo, modalInfo, handleUpdate}) => {
-    const [show, setShow] = useState(false);
-
-   
     
 const handlceCheckBox = (e) => {
     const { checked} = e.target
@@ -41,7 +37,7 @@ const handlceCheckBox = (e) => {
                 </div>
                 <div className="py-1">
                 <Form.Label>Alpha 2 Code</Form.Label>
-                <Form.Control type="text" maxLength="3" placeholder="Enter Alpha2Code" name="alpha2Code"  value={modalInfo.alpha2Code} onChange={handleInputChange} /> 
+                <Form.Control type="text" maxLength="2" placeholder="Enter Alpha2Code" name="alpha2Code"  value={modalInfo.alpha2Code} onChange={handleInputChange} /> 
                 </div>
                 <div className="py-1">
                 <Form.Label>Alpha 3 Code</Form.Label>
